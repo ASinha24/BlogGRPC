@@ -1,0 +1,58 @@
+syntax="proto3";
+
+package calculator;
+option go_package="sumpb";
+
+message SumRequest{
+    int32 first_num = 1;
+    int32 second_num = 2;
+}
+message SumResponse{
+    int32 sum_result = 1;
+}
+
+message PrimeNumberDecompositionRequest{
+    int64 number = 1;
+}
+
+message PrimeNumberDecompositionResponse{
+    int64 prime_factor = 1;
+}
+
+message ComputeAverageRequest{
+    int64 number = 1;
+}
+message ComputeAverageResponse{
+    double average = 1;
+}
+
+message FindMaximumRequest{
+    int64 number = 1 ;
+}
+
+message FindMaximumResponse{
+    int64 maximum = 1;
+}
+
+message SquareRootRequest{
+    int32 number = 1;
+}
+message SquareRootResponse{
+    double number_root = 1;
+}
+
+service CalculatorService{
+    //Unary
+    rpc Sum(SumRequest) returns (SumResponse){};
+    //server streaming
+    rpc PrimeNumberDecomposition(PrimeNumberDecompositionRequest) returns (stream PrimeNumberDecompositionResponse){};
+    //client steeaming
+    rpc ComputeAverage(stream ComputeAverageRequest) returns (ComputeAverageResponse){};
+    //Bi directional streaming
+    rpc FindMaximum(stream FindMaximumRequest) returns (stream FindMaximumResponse){};
+
+    //error handling
+    //This RPC will throw an exception when the number is negative
+    //The error being sent is of type INVALID_ARGUMENT
+    rpc SquareRoot(SquareRootRequest) returns (SquareRootResponse){};
+}
